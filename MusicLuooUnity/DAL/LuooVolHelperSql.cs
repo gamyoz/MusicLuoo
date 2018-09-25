@@ -9,6 +9,14 @@ namespace MusicLuooUnity.DAL
 {
     public class LuooVolHelperSql : BaseDal, ILuooVolHelper
     {
+        public int GetMaxVolNo()
+        {
+            const string sql = "select max(VolNo) from LuooVol with(nolock)";
+            DynamicParameters param = new DynamicParameters();
+
+            return Count(sql, ref param);
+        }
+
         public void Add(LuooVolModel model)
         {
             const string sql =

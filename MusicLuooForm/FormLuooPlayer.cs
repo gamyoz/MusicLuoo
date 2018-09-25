@@ -125,10 +125,9 @@ namespace MusicLuoo
             var model = LuooTaskHelper.GetTaskById(TaskId.ToString());
             if (model == null)
             {
-                //timer.Enabled = false;
-                //toolsslTip.ForeColor = Color.Red;
-                //toolsslTip.Text = "获取任务数据失败！请检查！";
-                //Application.DoEvents();
+                timer.Enabled = false;
+                toolsslTip.Text = "从服务器更新数据成功完成！";
+                Application.DoEvents();
                 return;
             }
 

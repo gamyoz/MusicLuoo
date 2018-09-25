@@ -5,6 +5,7 @@ using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using HtmlAgilityPack;
 using MusicLuooUnity.BLL;
 
 namespace MusicLuooUnity
@@ -36,29 +37,20 @@ namespace MusicLuooUnity
 
     public class LuooCrawlersHelper
     {
+        private readonly HtmlWeb _web = new HtmlWeb();
         public int GetMaxVolNo()
         {
             try
             {
-                HttpModel hm = new HttpModel();
-                hm.ApplicationName = "music";
-                hm.ContentType = "application/x-www-form-urlencoded";
-                hm.Encode = Encoding.UTF8;
-                hm.KeepAlive = false;
-                hm.Method = "GET";
-                hm.Url = "http://www.luoo.net/tag/?p=1";
-                string err;
-                HttpStatusCode hsc;
-                string result = HttpHelper.HttpDo(hm, out err, out hsc);
-                if (!string.IsNullOrEmpty(err))
+                var doc = _web.Load("http://www.luoo.net/tag/?p=1");
+                var list = doc.DocumentNode.SelectNodes("//a").Where(x => x.GetAttributeValue("class", "") == "cover-wrapper");
+
+                if (list.Any())
                 {
-                    LoggerUtil.ErrorLog("LuooCrawlersHelper.GetMaxVolNo", new Exception(err));
-                    return 0;
+                    return list.Max(x => int.Parse(x.Attributes["href"].Value.Split('/').Last()));
                 }
-                int startIndex = result.IndexOf("<div class=\"item\">") + 18;
-                string temp = result.Substring(startIndex, 80);
-                string vol = System.Text.RegularExpressions.Regex.Replace(temp, @"[^0-9]+", "");
-                return int.Parse(vol);
+                    //
+                return 0;
             }
             catch (Exception ex)
             {
@@ -72,8 +64,7 @@ namespace MusicLuooUnity
             try
             {
                 int onlineMaxVolNo = GetMaxVolNo();
-                var oldVols = LuooVolHelper.GetAll();
-                int localMaxVolNo = oldVols == null || oldVols.Count == 0 ? 0 : oldVols.Max(x => x.VolNo);
+                int localMaxVolNo = GetMaxVolNo();
                 if (onlineMaxVolNo <= localMaxVolNo)
                 {
                     return;
@@ -162,81 +153,39 @@ namespace MusicLuooUnity
         {
             try
             {
-                HttpModel hm = new HttpModel();
-                hm.ApplicationName = "music";
-                hm.ContentType = "application/x-www-form-urlencoded";
-                hm.Encode = Encoding.UTF8;
-                hm.KeepAlive = false;
-                hm.Method = "GET";
-                hm.Url = "http://www.luoo.net/vol/index/" + volNo;
-                string err;
-                HttpStatusCode hsc;
-                string result = HttpHelper.HttpDo(hm, out err, out hsc);
-                if (!string.IsNullOrEmpty(err))
-                {
-                    LoggerUtil.ErrorLog("LuooCrawlersHelper.OpenVolPageSingle", new Exception(err + "|" + hm.Url));
-                    return OpenVolPageSingle(volNo);
-                }
+                string volUrl = "http://www.luoo.net/vol/index/" + volNo;
+                var doc = _web.Load(volUrl);
+                var node = doc.DocumentNode;
                 //是否不存在
-                if (result.Contains("404 - 找不到你访问的页面"))
+                if (doc.ToString().Contains("404 - 找不到你访问的页面"))
                 {
                     return null;
                 }
-                int startIndex = -1, endIndex = -1;
-                string temp = "";
 
                 #region 期刊
 
                 LuooVolModel vol = new LuooVolModel();
                 vol.VolNo = volNo;
-                vol.VolUrl = hm.Url;
+                vol.VolUrl = volUrl;
                 vol.AddDate = DateTime.Now;
 
                 #region 取期刊号/期刊名称
 
-                startIndex = result.IndexOf("class=\"vol-number rounded\">");
-                if (startIndex == -1)
-                {
-                    return null;
-                }
-                temp = result.Substring(startIndex + "class=\"vol-number rounded\">".Length, 20);
-                vol.VolNumber = temp.Substring(0, temp.IndexOf("</span>"));
-                startIndex = result.IndexOf("class=\"vol-title\">") + "class=\"vol-title\">".Length;
-                temp = result.Substring(startIndex, 200);
-                vol.VolName = temp.Substring(0, temp.IndexOf("</span>"));
+                vol.VolName =
+                    node.SelectNodes("//span").FirstOrDefault(x => x.GetAttributeValue("class","") == "vol-title").InnerText;
 
                 #endregion
 
                 #region 取关键字
-                string keyword = "";
-                startIndex = 0;
-                int countKey = System.Text.RegularExpressions.Regex.Matches(result, "class=\"vol-tag-item\">").Count;
-                for (int i = 0; i < countKey; i++)
-                {
-                    startIndex = result.IndexOf("class=\"vol-tag-item\">", startIndex) + "class=\"vol-tag-item\">".Length;
-                    string t = result.Substring(startIndex, 50);
-                    if (t.Contains("</a>"))
-                        keyword += t.Substring(0, t.IndexOf("</a>"));
-                }
-
+                string keyword = node.SelectNodes("//a").FirstOrDefault(x => x.GetAttributeValue("class", "") == "vol-tag-item").InnerText;
                 vol.VolKeyword = keyword.Replace("#", ",").Trim(',').Trim();
 
                 #endregion
 
                 #region 取期刊图片
 
-                startIndex = result.IndexOf("id=\"volCoverWrapper\"") + "id=\"volCoverWrapper\"".Length;
-                temp = result.Substring(startIndex, 300);
-                var arrs = temp.Split(' ');
-                foreach (var a in arrs)
-                {
-                    if (a.Contains("src=\""))
-                    {
-                        vol.VolPicUrl = a.Replace("src=", "").Replace("\"", "");
-                        break;
-                    }
-                }
-
+                vol.VolPicUrl = node.Descendants("img").FirstOrDefault(x => x.GetAttributeValue("class", "") == "vol-cover").Attributes["src"].Value;
+                
                 #endregion
 
                 #endregion
@@ -244,45 +193,31 @@ namespace MusicLuooUnity
                 List<LuooSongModel> songs = new List<LuooSongModel>();
                 #region 歌曲
 
-                startIndex = 0;
-                int count = System.Text.RegularExpressions.Regex.Matches(result, "class=\"trackname btn-play\">").Count;
-                for (int i = 0; i < count; i++)
+                int index = 1;
+                var divs = node.Descendants("div").Where(x => x.GetAttributeValue("class", "") == "player-wrapper");
+                foreach (var d in divs)
                 {
-                    startIndex = result.IndexOf("class=\"trackname btn-play\">", startIndex) + "class=\"trackname btn-play\">".Length;
-                    string t = result.Substring(startIndex, 200);
+                    var img = d.ChildNodes.Descendants("img").FirstOrDefault().Attributes["src"].Value;
+                    var ps = d.ChildNodes.Descendants("p");
+                    var name = ps.FirstOrDefault(x => x.GetAttributeValue("class", "") == "name").InnerText;
+                    var artist = ps.FirstOrDefault(x => x.GetAttributeValue("class", "") == "artist").InnerText.Replace("Artist: ","");
+                    var album = ps.FirstOrDefault(x => x.GetAttributeValue("class", "") == "album").InnerText.Replace("Album: ", "");
 
                     LuooSongModel song = new LuooSongModel();
                     song.AddDate = DateTime.Now;
                     song.VolNo = volNo;
                     song.SongNo = Guid.NewGuid();
-                    string songName = t.Substring(0, t.IndexOf("</a>"));
-                    song.SongName = songName.Trim();
-                    int index = i + 1;
+                    song.SongName = name.Trim();
                     string songId = index < 10 ? ("0" + index) : index.ToString();
                     song.DownloadUrl = "http://mp3-cdn2.luoo.net/low/luoo/radio" + vol.VolNumber.TrimStart('0') + "/" + songId + ".mp3";
+                    song.Author = artist;
+                    song.AlbumName = album;
+                    song.ImgUrl = img;
                     songs.Add(song);
+
+                    index++;
                 }
 
-                startIndex = 0;
-                count = System.Text.RegularExpressions.Regex.Matches(result, "<p class=\"artist\">").Count;
-                for (int i = 0; i < count; i++)
-                {
-                    startIndex = result.IndexOf("<p class=\"artist\">", startIndex) + "<p class=\"artist\">".Length;
-                    string t = result.Substring(startIndex, 200);
-                    t = t.Substring(0, t.IndexOf("</p>"));
-                    songs[i].Author = t.Replace("Artist:", "").Trim();
-                }
-
-                startIndex = 0;
-                count = System.Text.RegularExpressions.Regex.Matches(result, "<p class=\"album\">").Count;
-                for (int i = 0; i < count; i++)
-                {
-                    startIndex = result.IndexOf("<p class=\"album\">", startIndex) + "<p class=\"album\">".Length;
-                    string t = result.Substring(startIndex, 300);
-                    t = t.Substring(0, t.IndexOf("</p>"));
-                    songs[i].AlbumName = t.Replace("Album:", "").Trim();
-                }
-                
                 #endregion
 
                 Tuple<LuooVolModel, List<LuooSongModel>> response = new Tuple<LuooVolModel, List<LuooSongModel>>(vol, songs);
@@ -294,6 +229,12 @@ namespace MusicLuooUnity
                 LoggerUtil.ErrorLog("OpenVolPageSingle:" + volNo, ex);
                 return null;
             }
+        }
+
+
+        public void test(string html)
+        {
+
         }
     }
 

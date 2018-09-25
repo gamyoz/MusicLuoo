@@ -65,5 +65,9 @@ namespace MusicLuooUnity.BLL
             }
             return datas;
         }
+        public static int GetMaxVolNo()
+        {
+            return ObjType.GetMaxVolNo();
+        }
     }
 }

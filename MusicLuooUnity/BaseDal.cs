@@ -20,10 +20,19 @@ namespace MusicLuooUnity
         public List<T> Query<T>(string sql, string conn = "") where T : new()
         {
             if (string.IsNullOrEmpty(conn)) conn = ConnStr.ConnectionWebRead;
-            List<T> list;
-            using (SqlConnection connection = new SqlConnection(conn))
+            List<T> list = null;
+            SqlConnection connection = new SqlConnection(conn);
+            try
             {
                 list = connection.Query<T>(sql).ToList();
+            }
+            catch (Exception ex)
+            {
+                LoggerUtil.ErrorLog("Execute", ex);
+                LoggerUtil.ErrorLog("Execute", new Exception(ex.Message + "|" + sql));
+            }
+            finally
+            {
                 connection.Close();
                 connection.Dispose();
             }
@@ -41,10 +50,19 @@ namespace MusicLuooUnity
         public List<T> Query<T>(string sql, ref DynamicParameters parameters, string conn = "")
         {
             if (string.IsNullOrEmpty(conn)) conn = ConnStr.ConnectionWebRead;
-            List<T> list;
-            using (SqlConnection connection = new SqlConnection(conn))
+            List<T> list = null;
+            SqlConnection connection = new SqlConnection(conn);
+            try
             {
                 list = connection.Query<T>(sql, parameters).ToList();
+            }
+            catch (Exception ex)
+            {
+                LoggerUtil.ErrorLog("Execute", ex);
+                LoggerUtil.ErrorLog("Execute", new Exception(ex.Message + "|" + sql));
+            }
+            finally
+            {
                 connection.Close();
                 connection.Dispose();
             }
@@ -62,10 +80,19 @@ namespace MusicLuooUnity
         public T QueryFirst<T>(string sql, ref DynamicParameters parameters, string conn = "") where T : class
         {
             if (string.IsNullOrEmpty(conn)) conn = ConnStr.ConnectionWebRead;
-            T list;
-            using (SqlConnection connection = new SqlConnection(conn))
+            T list = null;
+            SqlConnection connection = new SqlConnection(conn);
+            try
             {
                 list = connection.Query<T>(sql, parameters).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                LoggerUtil.ErrorLog("Execute", ex);
+                LoggerUtil.ErrorLog("Execute", new Exception(ex.Message + "|" + sql));
+            }
+            finally
+            {
                 connection.Close();
                 connection.Dispose();
             }
@@ -115,9 +142,20 @@ namespace MusicLuooUnity
             if (string.IsNullOrEmpty(conn)) conn = ConnStr.ConnectionWebRead;
             using (SqlConnection connection = new SqlConnection(conn))
             {
-                connection.Execute(sql, parameters, null, null, CommandType.StoredProcedure);
-                connection.Close();
-                connection.Dispose();
+                try
+                {
+                    connection.Execute(sql, parameters, null, null, CommandType.StoredProcedure);
+                }
+                catch (Exception ex)
+                {
+                    LoggerUtil.ErrorLog("Execute", ex);
+                    LoggerUtil.ErrorLog("Execute", new Exception(ex.Message + "|" + sql));
+                }
+                finally
+                {
+                    connection.Close();
+                    connection.Dispose();
+                }
             }
         }
         /// <summary>
@@ -130,12 +168,23 @@ namespace MusicLuooUnity
         public int Count(string sql, ref DynamicParameters parameters, string conn = "")
         {
             if (string.IsNullOrEmpty(conn)) conn = ConnStr.ConnectionWebRead;
-            int result;
+            int result = 0;
             using (SqlConnection connection = new SqlConnection(conn))
             {
-                result = connection.Query<int>(sql, parameters).FirstOrDefault();
-                connection.Close();
-                connection.Dispose();
+                try
+                {
+                    result = connection.Query<int>(sql, parameters).FirstOrDefault();
+                }
+                catch (Exception ex)
+                {
+                    LoggerUtil.ErrorLog("Execute", ex);
+                    LoggerUtil.ErrorLog("Execute", new Exception(ex.Message + "|" + sql));
+                }
+                finally
+                {
+                    connection.Close();
+                    connection.Dispose();
+                }
             }
             return result;
         }
@@ -150,12 +199,23 @@ namespace MusicLuooUnity
         public bool Exists(string sql, ref DynamicParameters parameters, string conn = "")
         {
             if (string.IsNullOrEmpty(conn)) conn = ConnStr.ConnectionWebRead;
-            int result;
+            int result = 0;
             using (SqlConnection connection = new SqlConnection(conn))
             {
-                result = connection.Query<int>(sql, parameters).FirstOrDefault();
-                connection.Close();
-                connection.Dispose();
+                try
+                {
+                    result = connection.Query<int>(sql, parameters).FirstOrDefault();
+                }
+                catch (Exception ex)
+                {
+                    LoggerUtil.ErrorLog("Execute", ex);
+                    LoggerUtil.ErrorLog("Execute", new Exception(ex.Message + "|" + sql));
+                }
+                finally
+                {
+                    connection.Close();
+                    connection.Dispose();
+                }
             }
             return result > 0;
         }

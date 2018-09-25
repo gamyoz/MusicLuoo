@@ -75,3 +75,6 @@ E:\Work\Winform\2018\MusicLuoo\MusicLuooForm\obj\Debug\MusicLuoo.FormMusic.resou
 E:\Work\Winform\2018\MusicLuoo\MusicLuooForm\obj\Debug\MusicLuoo.FormMusicOther.resources
 E:\Work\Winform\2018\MusicLuoo\MusicLuooForm\obj\Debug\MusicLuoo.Properties.Resources.resources
 E:\Work\Winform\2018\MusicLuoo\MusicLuooForm\obj\Debug\MusicLuoo.csproj.GenerateResource.Cache
+E:\Work\Winform\2018\MusicLuoo\MusicLuooForm\bin\Debug\HtmlAgilityPack.dll
+E:\Work\Winform\2018\MusicLuoo\MusicLuooForm\bin\Debug\HtmlAgilityPack.pdb
+E:\Work\Winform\2018\MusicLuoo\MusicLuooForm\bin\Debug\HtmlAgilityPack.xml

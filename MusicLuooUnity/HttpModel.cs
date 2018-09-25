@@ -89,6 +89,7 @@ namespace MusicLuooUnity
         public DateTime AddDate { get; set; }
         public string LocalPath { get; set; }
         public int SongIndex { get; set; }
+        public string ImgUrl { get; set; }
     }
 
     public class LuooTaskModel

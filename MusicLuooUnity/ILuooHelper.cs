@@ -18,6 +18,7 @@ namespace MusicLuooUnity
         List<LuooVolModel> GetListByLocalPath();
         void UpdateLocalPath(LuooVolModel model);
         List<string> GetVolKeywords();
+        int GetMaxVolNo();
     }
 
     public interface ILuooSongHelper

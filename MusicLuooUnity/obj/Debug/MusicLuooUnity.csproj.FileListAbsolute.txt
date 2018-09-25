@@ -11,3 +11,6 @@ E:\Work\Winform\2018\MusicLuoo\MusicLuooUnity\bin\Debug\Newtonsoft.Json.xml
 E:\Work\Winform\2018\MusicLuoo\MusicLuooUnity\obj\Debug\MusicLuooUnity.csprojResolveAssemblyReference.cache
 E:\Work\Winform\2018\MusicLuoo\MusicLuooUnity\obj\Debug\MusicLuooUnity.dll
 E:\Work\Winform\2018\MusicLuoo\MusicLuooUnity\obj\Debug\MusicLuooUnity.pdb
+E:\Work\Winform\2018\MusicLuoo\MusicLuooUnity\bin\Debug\HtmlAgilityPack.dll
+E:\Work\Winform\2018\MusicLuoo\MusicLuooUnity\bin\Debug\HtmlAgilityPack.pdb
+E:\Work\Winform\2018\MusicLuoo\MusicLuooUnity\bin\Debug\HtmlAgilityPack.xml

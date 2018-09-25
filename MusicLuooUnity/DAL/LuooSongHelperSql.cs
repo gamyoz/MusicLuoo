@@ -41,7 +41,7 @@ namespace MusicLuooUnity.DAL
             StringBuilder sql = new StringBuilder();
             foreach (var m in models)
             {
-                sql.Append("insert into LuooSong(VolNo,SongNo,SongName,DownloadUrl,AlbumName,Author,LocalPath,AddDate) values (");
+                sql.Append("insert into LuooSong(VolNo,SongNo,SongName,DownloadUrl,AlbumName,Author,LocalPath,ImgUrl,AddDate) values (");
                 sql.AppendFormat("{0},", m.VolNo);
                 sql.AppendFormat("'{0}',", m.SongNo);
                 sql.AppendFormat("'{0}',", Common.GetSqlParam(m.SongName));
@@ -49,6 +49,7 @@ namespace MusicLuooUnity.DAL
                 sql.AppendFormat("'{0}',", Common.GetSqlParam(m.AlbumName));
                 sql.AppendFormat("'{0}',", Common.GetSqlParam(m.Author));
                 sql.AppendFormat("'{0}',", Common.GetSqlParam(m.LocalPath));
+                sql.AppendFormat("'{0}',", Common.GetSqlParam(m.ImgUrl));
                 sql.AppendFormat("'{0}');", m.AddDate);
             }
             DynamicParameters param = new DynamicParameters();
@@ -58,7 +59,7 @@ namespace MusicLuooUnity.DAL
         public void Update(LuooSongModel model)
         {
             const string sql =
-                   "update LuooSong set VolNo=@VolNo,SongName=@SongName,DownloadUrl=@DownloadUrl,AlbumName=@AlbumName,Author=@Author,AddDate=@AddDate,LocalPath=@LocalPath where SongNo=@SongNo";
+                   "update LuooSong set VolNo=@VolNo,SongName=@SongName,DownloadUrl=@DownloadUrl,AlbumName=@AlbumName,Author=@Author,AddDate=@AddDate,LocalPath=@LocalPath,ImgUrl=@ImgUrl where SongNo=@SongNo";
             DynamicParameters param = new DynamicParameters();
             param.Add("VolNo", model.VolNo);
             param.Add("SongNo", model.SongNo);
@@ -67,6 +68,7 @@ namespace MusicLuooUnity.DAL
             param.Add("AlbumName", model.AlbumName);
             param.Add("Author", model.Author);
             param.Add("AddDate", model.AddDate);
+            param.Add("ImgUrl", model.ImgUrl);
             param.Add("LocalPath", model.LocalPath);
             Execute(sql, ref param);
         }
