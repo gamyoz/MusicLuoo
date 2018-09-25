@@ -1,0 +1,109 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <meta charset="utf-8" />
+    <script src="js/jquery.min.js"></script>
+    <script src="layui/layui.all.js"></script>
+    <link href="layui/css/layui.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="demoTable">
+        <!--搜索ID：-->
+        <div class="layui-inline">
+            <input class="layui-input" id="txtKey" />
+        </div>
+        <button id="btnQuery" class="layui-btn" onclick="music.init_data()">搜索</button>
+    </div>
+<table class="layui-table" id="data_table">
+    <colgroup>
+        <col width="150">
+        <col width="200">
+        <col>
+    </colgroup>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>名称</th>
+        <th>作者</th>
+        <th>文件类型</th>
+        <th>文件大小</th>
+        <th>专辑名</th>
+        <th>公司</th>
+        <th>图片</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+
+<script type="text/javascript">
+    var music = {
+        init: function() {},
+        init_data: function () {
+            $("#btnQuery").val("搜索中...").addClass("layui-btn-disabled");
+            var key = $.trim($("#txtKey").val());
+            $.ajax({
+                type: "get",
+                async: true,
+                url: "/ajax/ajax.ashx?action=Query",
+                data: { key: key },
+                dataType: "json",
+                success: function (jsondata) {
+                    $("#btnQuery").val("搜索").removeClass("layui-btn-disabled");
+                    if (jsondata.code == 1) {
+                        $("#data_table tbody").html('');
+                        $.each(jsondata.data, function (i, j) {
+                            var html = "";
+                            html += "<tr>";
+                            html += "<td>" + j["song_id"] + "</td>";
+                            html += "<td>" + j["title"] + "</td>";
+                            html += "<td>" + j["author"] + "</td>";
+                            html += "<td>" + j["file_extension"] + "</td>";
+                            html += "<td>" + j["file_size"] + "</td>";
+                            html += "<td>" + j["album_title"] + "</td>";
+                            html += "<td>" + j["si_proxycompany"] + "</td>";
+                            html += "<td id='pic_" + j["song_id"] + "'><img src='" + j["pic_small"] + "' onclick='music.show_pic(\"" + j["song_id"] + "\")'/><img src='" + j["pic_big"] + "' style='display:none'/></td>";
+                            html += "<td><button class='layui-btn layui-btn-xs layui-btn-normal' onclick='music.ting(\"" + j["file_localpath"] + "\",\"" + j["author"] + "\",\"" + j["pic_small"] + "\",\"" + j["title"] + "\")'>试听</button><button class='layui-btn layui-btn-xs layui-btn-normal' onclick='music.download(\"" + j["file_link"] + "\")'>下载</button></td>";
+                            html += "</tr>";
+                            $("#data_table tbody").append(html);
+                        });
+                    } else {
+                        $("#data_table tbody").html("<tr><td align='center' colspan='9'>查询数据失败..." + jsondata.message + "</td></tr>");
+                    }
+                },
+                error: function() {
+                    $("#btnQuery").val("搜索").removeClass("layui-btn-disabled");
+                    alert("系统错误");
+                }
+            });
+
+        },
+        show_pic: function(id) {
+            layer.tips('下', '#pic_'+id, {
+                tips: 3
+            });
+        },
+        download: function (link) { },
+        ting: function (url, author, pic, title) {
+            var u = "play.html?url=" + encodeURIComponent(url) + "&author=" + author + "&pic=" + encodeURIComponent(pic) + "&title=" + title + "&rd=" + Math.random();
+            console.log(u)
+            layer.open({
+                id:'ting_dlg',
+                type: 2,
+                anim: 2,
+                shade: false,
+                scrollbar: false,
+                content: [u, 'no'],
+                area: ['220px', '150px'],
+                offset: 'rb',
+                title:false
+            });
+        }
+    }
+</script>
+</body>
+</html>

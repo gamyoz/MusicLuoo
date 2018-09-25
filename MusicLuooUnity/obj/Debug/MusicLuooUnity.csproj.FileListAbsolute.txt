@@ -1,0 +1,7 @@
+E:\Work\Winform\落网音乐下载\MusicLuooUnity\bin\Debug\MusicLuooUnity.dll
+E:\Work\Winform\落网音乐下载\MusicLuooUnity\bin\Debug\MusicLuooUnity.pdb
+E:\Work\Winform\落网音乐下载\MusicLuooUnity\bin\Debug\Kamsoft.Data.dll
+E:\Work\Winform\落网音乐下载\MusicLuooUnity\bin\Debug\Newtonsoft.Json.xml
+E:\Work\Winform\落网音乐下载\MusicLuooUnity\obj\Debug\MusicLuooUnity.dll
+E:\Work\Winform\落网音乐下载\MusicLuooUnity\obj\Debug\MusicLuooUnity.pdb
+E:\Work\Winform\落网音乐下载\MusicLuooUnity\obj\Debug\MusicLuooUnity.csprojResolveAssemblyReference.cache

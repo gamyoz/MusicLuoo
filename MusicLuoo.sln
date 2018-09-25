@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicLuoo", "MusicLuooForm\MusicLuoo.csproj", "{6F6901CF-46A0-49D7-BF13-9BF2D7419E90}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicLuooUnity", "MusicLuooUnity\MusicLuooUnity.csproj", "{186813D8-6DF3-4BC0-BFDB-C67BE8419D3E}"
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "MusicLuooPlayer", "MusicLuooPlayer\", "{AB18B119-2C04-435C-BEDE-67D0E6C00E64}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5.2"
+		ProjectReferences = "{186813d8-6df3-4bc0-bfdb-c67be8419d3e}|MusicLuooUnity.dll;"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_1677"
+		Debug.AspNetCompiler.PhysicalPath = "MusicLuooPlayer\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_1677\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_1677"
+		Release.AspNetCompiler.PhysicalPath = "MusicLuooPlayer\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_1677\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "1677"
+		SlnRelativePath = "MusicLuooPlayer\"
+		DefaultWebSiteLanguage = "Visual C#"
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6F6901CF-46A0-49D7-BF13-9BF2D7419E90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F6901CF-46A0-49D7-BF13-9BF2D7419E90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F6901CF-46A0-49D7-BF13-9BF2D7419E90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F6901CF-46A0-49D7-BF13-9BF2D7419E90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{186813D8-6DF3-4BC0-BFDB-C67BE8419D3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{186813D8-6DF3-4BC0-BFDB-C67BE8419D3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{186813D8-6DF3-4BC0-BFDB-C67BE8419D3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{186813D8-6DF3-4BC0-BFDB-C67BE8419D3E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB18B119-2C04-435C-BEDE-67D0E6C00E64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB18B119-2C04-435C-BEDE-67D0E6C00E64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB18B119-2C04-435C-BEDE-67D0E6C00E64}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB18B119-2C04-435C-BEDE-67D0E6C00E64}.Release|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

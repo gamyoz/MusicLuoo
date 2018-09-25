@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+	<meta charset="utf-8" />
+    <link href="aplayer/dist/APlayer.min.css" rel="stylesheet" />
+    <script src="js/jquery.min.js"></script>
+    <script src="aplayer/dist/APlayer.min.js"></script>
+</head>
+<body>
+    <div id="player" class="aplayer">
+    </div>
+</body>
+<script type="text/javascript">
+    var ap3 = new APlayer({
+        element: document.getElementById('player'),
+        narrow: false,
+        autoplay: true,
+        showlrc: false,
+        music: {
+            title: request("title"),
+            author: request("author"),
+            url: request("url"),
+            pic: request("pic")
+        }
+    });
+    ap3.init();
+
+    function request(key, seachUrl) {
+        // var seachUrl = window.location.search.replace("?", "");
+        seachUrl = seachUrl || window.location.href;
+        if (seachUrl.indexOf("?") < 0) {
+            return "";
+        }
+        seachUrl = seachUrl.replace(/#/g, "").split("?")[1];
+        var ss = seachUrl.split("&");
+        var keyStr = "";
+        var keyIndex = -1;
+        for (var i = 0; i < ss.length; i++) {
+            keyIndex = ss[i].indexOf("=");
+            keyStr = ss[i].substring(0, keyIndex);
+            if (keyStr.toLowerCase() == key.toLowerCase()) {
+                return decodeURIComponent(ss[i].substring(keyIndex + 1, ss[i].length));
+            }
+        }
+        return "";
+    }
+</script>
+</html>

@@ -1,0 +1,176 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{6F6901CF-46A0-49D7-BF13-9BF2D7419E90}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MusicLuoo</RootNamespace>
+    <AssemblyName>落网音乐下载</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Gnome-Audio-X-Generic.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Aspose.Words, Version=11.3.0.0, Culture=neutral, PublicKeyToken=47d5d0e1ef9d080b, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\Aspose.Words.dll</HintPath>
+    </Reference>
+    <Reference Include="Kamsoft.Data">
+      <HintPath>..\..\..\Webform\JinRui\dll\Kamsoft.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>dll\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WebKitBrowser, Version=0.5.0.0, Culture=neutral, PublicKeyToken=b967213f6d29a3be, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\WebKitBrowser.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="FileHelper.cs" />
+    <Compile Include="FormLuooPlayer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormLuooPlayer.Designer.cs">
+      <DependentUpon>FormLuooPlayer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormLuooPlayerWeb.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormLuooPlayerWeb.Designer.cs">
+      <DependentUpon>FormLuooPlayerWeb.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormMusic.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormMusic.Designer.cs">
+      <DependentUpon>FormMusic.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormMusicOther.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormMusicOther.Designer.cs">
+      <DependentUpon>FormMusicOther.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LoggerUtil.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="FormLuooPlayer.resx">
+      <DependentUpon>FormLuooPlayer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormLuooPlayerWeb.resx">
+      <DependentUpon>FormLuooPlayerWeb.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormMusic.resx">
+      <DependentUpon>FormMusic.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormMusicOther.resx">
+      <DependentUpon>FormMusicOther.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Aspose.Words.dll" />
+    <Content Include="Aspose.Words.xml" />
+    <Content Include="data\song.xml" />
+    <Content Include="data\vol.xml" />
+    <Content Include="dll\Newtonsoft.Json.dll" />
+    <Content Include="dll\Newtonsoft.Json.xml" />
+    <Content Include="dll\TuanDai.HttpClient.dll" />
+    <Content Include="Gnome-Audio-X-Generic.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="AxWMPLib">
+      <Guid>{6BF52A50-394A-11D3-B153-00C04F79FAA6}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>aximp</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
+    <COMReference Include="WMPLib">
+      <Guid>{6BF52A50-394A-11D3-B153-00C04F79FAA6}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MusicLuooUnity\MusicLuooUnity.csproj">
+      <Project>{186813d8-6df3-4bc0-bfdb-c67be8419d3e}</Project>
+      <Name>MusicLuooUnity</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

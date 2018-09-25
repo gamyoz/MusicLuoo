@@ -1,0 +1,155 @@
+﻿<html>
+<head>
+    <title></title>
+    <meta charset="utf-8">
+
+    <link rel="stylesheet" type="text/css" href="/css/scroll.css">
+    <link rel="stylesheet" type="text/css" href="/css/xiami.css">
+
+</head>
+<body>
+    <!--模糊画布-->
+    <div class="blur">
+        <canvas style="width:1366px;height:700px;opacity:0;" width="1366" height="700" id="canvas"></canvas>
+    </div>
+    <div class="playerMain">
+        <div class="top">
+            <!--<a href="#" class="logo"></a>-->
+            <div class="search">
+                <div type="submit" class="searchBtn"></div>
+                <input type="text" class="searchTxt">
+            </div>
+            <div class="mainNav">
+                <label style="color: #fff;">2018-03-05 21:55:40</label>
+            </div>
+        </div>
+        <div class="middle">
+            <div class="mainWrap">
+
+                <div class="mainBody">
+                    <div class="playHd">
+                        <div class="phInner">
+                            <div class="col">歌曲(50)</div>
+                            <div class="col">演唱者</div>
+                            <div class="col">专辑</div>
+                        </div>
+                    </div>
+                    <div class="playBd">
+                        <div class="scrollView">
+                            <!-- <div class="scroll"></div> -->
+                            <ul class="songUL">
+                                <li class="songList">
+                                    <div class="songLMain">
+                                        <div class="start">
+                                            <em sonN="http://mp3-cdn2.luoo.net/low/luoo/radio44/07.mp3">1</em>
+                                        </div>
+                                        <div class="songBd">
+                                            <div class="col colsn">盛夏光年</div>
+                                            <div class="col colcn">陈冰</div>
+                                            <div class="col">好声音第三季</div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="songList">
+                                    <div class="songLmain">
+
+                                        <div class="start">
+                                            <em sonN="http://mp3-cdn2.luoo.net/low/luoo/radio44/07.mp3">2</em>
+                                        </div>
+                                        <div class="songBd">
+                                            <div class="col colsn">漂洋过海来看你(Live)</div>
+                                            <div class="col colcn">刘明湘</div>
+                                            <div class="col">好声音第三季</div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="mainOuther">
+                    <div id="lyr"></div>
+                </div>
+            </div>
+        </div>
+        <div class="bottom">
+            <div class="playerWrap">
+                <div class="playerCon">
+                    <a href="#" class="pbtn prevBtn"></a>
+                    <a href="#" class="pbtn playBtn" isplay="0"></a>
+                    <a href="#" class="pbtn nextBtn"></a>
+                    <a href="#" class="mode"></a>
+                </div>
+                <div class="playInfo">
+                    <div class="trackInfo">
+                        <a href="#" class="songName">漂洋过海来看你(Live)</a>
+                        -
+                        <a href="#" class="songPlayer">刘明湘</a>
+                        <div class="trackCon">
+                            <a href="#" class="tc1"></a>
+                            <a href="#" class="tc2"></a>
+                            <a href="#" class="tc3"></a>
+                        </div>
+                    </div>
+                    <div class="playerLength">
+                        <div class="position">00:00</div>
+                        <div class="progress">
+                            <div class="pro1"></div>
+                            <div class="pro2">
+                                <a href="#" class="dian"></a>
+                            </div>
+                        </div>
+                        <div class="duration">03:35</div>
+                    </div>
+                </div>
+                <div class="vol">
+                    <a href="#" class="pinBtn"></a>
+                    <div class="volm">
+                        <div class="volSpeaker"></div>
+                        <div class="volControl">
+                            <a href="#" class="dian2"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio id="audio" src="http://mp3-cdn2.luoo.net/low/luoo/radio44/07.mp3"></audio>
+    <script type="text/javascript" src="/js/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="/js/jquery-ui.js"></script>
+    <script type="text/javascript" src="/js/canvas.js"></script>
+    <script type="text/javascript" src="/js/mousewheel.js"></script>
+    <script type="text/javascript" src="/js/scroll.js"></script>
+    <script type="text/javascript" src="/js/common.js"></script>
+    <script type="text/javascript" src="/js/xiami.js"></script>
+    <script type="text/javascript">
+    $(function() {
+        luoo_player.init();
+    });
+    var luoo_player = {
+        init: function() {
+            ajax("/ajax/ajax.ashx?action=Init", "Get", "", function (data) {
+                var html = "";
+                $.each(data,function(i, j) {
+                    html += '<li class="songList">';
+                    html += '<div class="songLMain">';
+                    html += '<div class="start">';
+                    html += '<em sonN="' + j["DownloadUrl"] + '">' + (i + 1) + '</em>';
+                    html += '</div>';
+                    html += '<div class="songBd">';
+                    html += '<div class="col colsn">' + j["SongName"] + '</div>';
+                    html += '<div class="col colcn">' + j["Author"] + '</div>';
+                    html += '<div class="col">' + j["AlbumName"] + '</div>';
+                    html += ' </div></div></li>';
+                });
+                $("#songUL").html(html);
+            });
+        }
+    }
+
+    </script>
+</body>
+</html>
