@@ -16,7 +16,7 @@ namespace MusicLuoo
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormLuooPlayer());
+            Application.Run(new FormLuooPlayer()); 
         }
     }
 }

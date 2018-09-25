@@ -50,3 +50,9 @@ E:\Work\Winform\落网音乐下载\MusicLuooForm\obj\Debug\MusicLuoo.FormMusic.r
 E:\Work\Winform\落网音乐下载\MusicLuooForm\obj\Debug\MusicLuoo.FormMusicOther.resources
 E:\Work\Winform\落网音乐下载\MusicLuooForm\obj\Debug\MusicLuoo.Properties.Resources.resources
 E:\Work\Winform\落网音乐下载\MusicLuooForm\obj\Debug\MusicLuoo.csproj.GenerateResource.Cache
+E:\Work\Winform\2018\MusicLuoo\MusicLuooForm\bin\Debug\落网音乐下载.exe.config
+E:\Work\Winform\2018\MusicLuoo\MusicLuooForm\obj\Debug\Interop.WMPLib.dll
+E:\Work\Winform\2018\MusicLuoo\MusicLuooForm\obj\Debug\AxInterop.WMPLib.dll
+E:\Work\Winform\2018\MusicLuoo\MusicLuooForm\obj\Debug\MusicLuoo.csproj.ResolveComReference.cache
+E:\Work\Winform\2018\MusicLuoo\MusicLuooForm\obj\Debug\落网音乐下载.exe
+E:\Work\Winform\2018\MusicLuoo\MusicLuooForm\obj\Debug\落网音乐下载.pdb
