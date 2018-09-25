@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Web;
 using MusicLuooUnity;
+using MusicLuooUnity.BLL;
 using Newtonsoft.Json;
 
 public class ajax : IHttpHandler {
@@ -38,7 +39,7 @@ public class ajax : IHttpHandler {
 
     private List<LuooVolSongModel> Init(int pageIndex, int pageSize)
     {
-        var songs = MusicLuooUnity.LuooSongHelper.GetListPager(pageIndex, pageSize, "");
+        var songs = LuooSongHelper.GetListPager(pageIndex, pageSize, "");
         return songs;
     }
 

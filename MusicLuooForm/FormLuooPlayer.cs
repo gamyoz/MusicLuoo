@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Windows.Forms;
 using MusicLuooUnity;
+using MusicLuooUnity.BLL;
 using WMPLib;
 
 namespace MusicLuoo

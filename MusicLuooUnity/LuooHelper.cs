@@ -5,6 +5,7 @@ using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using MusicLuooUnity.BLL;
 
 namespace MusicLuooUnity
 {
@@ -30,133 +31,6 @@ namespace MusicLuooUnity
             if (p == null) return null;
 
             return p.ToString().Replace("'", "''");
-        }
-    }
-
-    public class LuooVolHelper
-    {
-        static readonly ILuooVolHelper ObjType = new LuooVolHelperSql();
-        public static void Add(LuooVolModel model)
-        {
-            ObjType.Add(model);
-        }
-
-        public static void AddList(List<LuooVolModel> models)
-        {
-            ObjType.AddList(models);
-        }
-        public static void Update(LuooVolModel model)
-        {
-            ObjType.Update(model);
-        }
-        public static void UpdateLocalPath(LuooVolModel model)
-        {
-            ObjType.UpdateLocalPath(model);
-        }
-        public static void Delete(int volNo)
-        {
-            ObjType.Delete(volNo);
-        }
-        public static List<LuooVolModel> GetAll()
-        {
-            return ObjType.GetAll();
-        }
-        public static List<LuooVolModel> UpdateCache()
-        {
-            return ObjType.UpdateCache();
-        }
-        public static LuooVolModel GetByVolNo(int no)
-        {
-            return ObjType.GetByVolNo(no);
-        }
-
-        public static List<LuooVolModel> GetListByLocalPath()
-        {
-            return ObjType.GetListByLocalPath();
-        }
-        public static List<string> GetVolKeywords()
-        {
-            var list = ObjType.GetVolKeywords();
-            if (list == null) return null;
-            List<string> datas = new List<string>();
-            foreach (var l in list)
-            {
-                var arr = l.Split(',');
-                foreach (var s in arr)
-                {
-                    if(datas.Contains(s)) continue;
-                    datas.Add(s);
-                }
-            }
-            return datas;
-        }
-    }
-
-    public class LuooSongHelper
-    {
-        static readonly ILuooSongHelper ObjType = new LuooSongHelperSql();
-        public static int GetAllCount()
-        {
-            return ObjType.GetAllCount();
-        }
-        public static void Add(LuooSongModel model)
-        {
-            ObjType.Add(model);
-        }
-
-        public static void AddList(List<LuooSongModel> models)
-        {
-            ObjType.AddList(models);
-        }
-        public static void Update(LuooSongModel model)
-        {
-            ObjType.Update(model);
-        }
-        public static void UpdateLocalPath(LuooSongModel model)
-        {
-            ObjType.UpdateLocalPath(model);
-        }
-        public static void Delete(Guid volNo)
-        {
-            ObjType.Delete(volNo);
-        }
-        public static List<LuooVolSongModel> GetAll()
-        {
-            return ObjType.GetAll();
-        }
-        public static List<LuooVolSongModel> UpdateCache(int top)
-        {
-            return ObjType.UpdateCache(top);
-        }
-        public static LuooSongModel GetByVolNo(Guid no)
-        {
-            return ObjType.GetByVolNo(no);
-        }
-        public static List<LuooSongModel> GetListByLocalPath()
-        {
-            return ObjType.GetListByLocalPath();
-        }
-        public static List<LuooVolSongModel> GetListPager(int pageIndex, int pageSize, string keywords)
-        {
-            return ObjType.GetListPager(pageIndex, pageSize, keywords);
-        }
-    }
-
-    public class LuooTaskHelper
-    {
-        static readonly ILuooTaskHelper ObjType = new LuooTaskHelperSql();
-        public static void Add(LuooTaskModel model)
-        {
-            ObjType.Add(model);
-        }
-
-        public static void Update(string id, int currCount)
-        {
-            ObjType.Update(id, currCount);
-        }
-        public static LuooTaskModel GetTaskById(string id)
-        {
-            return ObjType.GetTaskById(id);
         }
     }
 

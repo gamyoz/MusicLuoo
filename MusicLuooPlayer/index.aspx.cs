@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using MusicLuooUnity;
+using MusicLuooUnity.BLL;
 
 public partial class index : System.Web.UI.Page
 {
@@ -10,8 +11,8 @@ public partial class index : System.Web.UI.Page
     {
         if (!IsPostBack)
         {
-            Count = MusicLuooUnity.LuooSongHelper.GetAllCount();
-            Songs = MusicLuooUnity.LuooSongHelper.GetListPager(1, 100,"");
+            Count = LuooSongHelper.GetAllCount();
+            Songs = LuooSongHelper.GetListPager(1, 100,"");
         }
     }
 
