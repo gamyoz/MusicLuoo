@@ -13,6 +13,7 @@ namespace MusicLuooUnity
     public class Common
     {
         public static string AssemblyPath = PubConstant.GetAppSetting("DAL");
+
         public static object CreateObjectNoCache(string classNamespace)
         {
             string className = classNamespace + AssemblyPath;
@@ -38,18 +39,20 @@ namespace MusicLuooUnity
     public class LuooCrawlersHelper
     {
         private readonly HtmlWeb _web = new HtmlWeb();
+
         public int GetMaxVolNo()
         {
             try
             {
                 var doc = _web.Load("http://www.luoo.net/tag/?p=1");
-                var list = doc.DocumentNode.SelectNodes("//a").Where(x => x.GetAttributeValue("class", "") == "cover-wrapper");
+                var list =
+                    doc.DocumentNode.SelectNodes("//a").Where(x => x.GetAttributeValue("class", "") == "cover-wrapper");
 
                 if (list.Any())
                 {
                     return list.Max(x => int.Parse(x.Attributes["href"].Value.Split('/').Last()));
                 }
-                    //
+                //
                 return 0;
             }
             catch (Exception ex)
@@ -64,15 +67,15 @@ namespace MusicLuooUnity
             try
             {
                 int onlineMaxVolNo = GetMaxVolNo();
-                int localMaxVolNo = GetMaxVolNo();
+                int localMaxVolNo = BLL.LuooVolHelper.GetMaxVolNo();
                 if (onlineMaxVolNo <= localMaxVolNo)
                 {
                     return;
                 }
-          
+
                 const int perCount = 100;
-                int count = (onlineMaxVolNo - localMaxVolNo) / perCount;
-                if ((onlineMaxVolNo - localMaxVolNo) % perCount > 0) count += 1;
+                int count = (onlineMaxVolNo - localMaxVolNo)/perCount;
+                if ((onlineMaxVolNo - localMaxVolNo)%perCount > 0) count += 1;
 
                 LuooTaskModel task = new LuooTaskModel
                 {
@@ -86,13 +89,13 @@ namespace MusicLuooUnity
 
                 for (int i = 0; i < count; i++)
                 {
-                    int start = i * perCount + localMaxVolNo;
+                    int start = i*perCount + localMaxVolNo;
                     int end = start + perCount;
                     if (end > onlineMaxVolNo) end = onlineMaxVolNo;
 
                     OpenVolPageSync(start, end, task.Id);
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -171,49 +174,68 @@ namespace MusicLuooUnity
 
                 #region 取期刊号/期刊名称
 
-                vol.VolName =
-                    node.SelectNodes("//span").FirstOrDefault(x => x.GetAttributeValue("class","") == "vol-title").InnerText;
-
+                var h1 = node.Descendants("h1").FirstOrDefault(x=>x.GetAttributeValue("class", "") == "vol-name");
+                if (h1 == null)
+                {
+                    return null;
+                }
+                vol.VolName = h1.Descendants("span").FirstOrDefault(x => x.GetAttributeValue("class", "") == "vol-title").InnerText;
+                vol.VolNumber = h1.Descendants("span").FirstOrDefault(x => x.GetAttributeValue("class", "") == "vol-number rounded").InnerText;
                 #endregion
 
                 #region 取关键字
-                string keyword = node.SelectNodes("//a").FirstOrDefault(x => x.GetAttributeValue("class", "") == "vol-tag-item").InnerText;
+
+                var keyNode = node.SelectNodes("//a")
+                    .FirstOrDefault(x => x.GetAttributeValue("class", "") == "vol-tag-item");
+                string keyword = keyNode == null ? "" : keyNode.InnerText;
                 vol.VolKeyword = keyword.Replace("#", ",").Trim(',').Trim();
 
                 #endregion
 
                 #region 取期刊图片
 
-                vol.VolPicUrl = node.Descendants("img").FirstOrDefault(x => x.GetAttributeValue("class", "") == "vol-cover").Attributes["src"].Value;
-                
+                vol.VolPicUrl =
+                    node.Descendants("img")
+                        .FirstOrDefault(x => x.GetAttributeValue("class", "") == "vol-cover")
+                        .Attributes["src"].Value;
+
                 #endregion
 
                 #endregion
 
                 List<LuooSongModel> songs = new List<LuooSongModel>();
+
                 #region 歌曲
 
                 int index = 1;
                 var divs = node.Descendants("div").Where(x => x.GetAttributeValue("class", "") == "player-wrapper");
                 foreach (var d in divs)
                 {
-                    var img = d.ChildNodes.Descendants("img").FirstOrDefault().Attributes["src"].Value;
-                    var ps = d.ChildNodes.Descendants("p");
-                    var name = ps.FirstOrDefault(x => x.GetAttributeValue("class", "") == "name").InnerText;
-                    var artist = ps.FirstOrDefault(x => x.GetAttributeValue("class", "") == "artist").InnerText.Replace("Artist: ","");
-                    var album = ps.FirstOrDefault(x => x.GetAttributeValue("class", "") == "album").InnerText.Replace("Album: ", "");
+                    try
+                    {
+                        var imgElem = d.Descendants("img").FirstOrDefault();
+                        var img = imgElem == null ? "" : imgElem.Attributes["src"].Value;
+                        var ps = d.Descendants("p");
+                        var name = ps.FirstOrDefault(x => x.GetAttributeValue("class", "") == "name").InnerText;
+                        var artist = ps.FirstOrDefault(x => x.GetAttributeValue("class", "") == "artist").InnerText.Replace("Artist: ", "");
+                        var album = ps.FirstOrDefault(x => x.GetAttributeValue("class", "") == "album").InnerText.Replace("Album: ", "");
 
-                    LuooSongModel song = new LuooSongModel();
-                    song.AddDate = DateTime.Now;
-                    song.VolNo = volNo;
-                    song.SongNo = Guid.NewGuid();
-                    song.SongName = name.Trim();
-                    string songId = index < 10 ? ("0" + index) : index.ToString();
-                    song.DownloadUrl = "http://mp3-cdn2.luoo.net/low/luoo/radio" + vol.VolNumber.TrimStart('0') + "/" + songId + ".mp3";
-                    song.Author = artist;
-                    song.AlbumName = album;
-                    song.ImgUrl = img;
-                    songs.Add(song);
+                        LuooSongModel song = new LuooSongModel();
+                        song.AddDate = DateTime.Now;
+                        song.VolNo = volNo;
+                        song.SongNo = Guid.NewGuid();
+                        song.SongName = name.Trim();
+                        string songId = index < 10 ? ("0" + index) : index.ToString();
+                        song.DownloadUrl = "http://mp3-cdn2.luoo.net/low/luoo/radio" + vol.VolNumber.TrimStart('0') + "/" + songId + ".mp3";
+                        song.Author = artist;
+                        song.AlbumName = album;
+                        song.ImgUrl = img;
+                        songs.Add(song);
+                    }
+                    catch (Exception ex)
+                    {
+                        
+                    }
 
                     index++;
                 }
